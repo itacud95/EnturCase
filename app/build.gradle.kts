@@ -1,9 +1,12 @@
+import org.gradle.declarative.dsl.schema.FqName.Empty.packageName
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.apollographql.apollo3")
 }
 
 android {
@@ -66,6 +69,12 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     // gson
     implementation("com.google.code.gson:gson:2.10.1")
+    // graphql
+    implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
+}
 
-
+apollo {
+    service("service") {
+        packageName.set("com.example.enturcase")
+    }
 }

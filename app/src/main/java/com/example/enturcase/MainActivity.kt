@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloException
 import com.example.enturcase.ui.theme.EnturCaseTheme
 import com.example.enturcase.utils.Logger
 import com.example.enturcase.viewmodel.MainViewModel
@@ -25,7 +27,30 @@ import com.google.android.gms.location.LocationServices
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 
+
+object GraphQLClient {
+    val apolloClient: ApolloClient = ApolloClient.Builder()
+        .serverUrl("https://api.entur.io/journey-planner/v3/graphql")
+        .build()
+
+    fun fetchStopPlace() {
+        runBlocking {
+            try {
+                val response = apolloClient.query(StopPlaceQuery()).execute()
+
+                if (response.hasErrors()) {
+                    Logger.debug("GraphQL Error: ${response.errors}")
+                } else {
+                    Logger.debug("GraphQL Response: ${response.data}")
+                }
+            } catch (e: ApolloException) {
+                Logger.debug("Request failed: ${e.message}")
+            }
+        }
+    }
+}
 
 
 @AndroidEntryPoint
@@ -103,6 +128,9 @@ class MainActivity : ComponentActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //        checkAndRequestPermissions()
+
+        GraphQLClient.fetchStopPlace()
+
 
         viewModel.data.observe(this) { response ->
             Logger.debug("observe data: $response")
