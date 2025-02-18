@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NearbyStopsViewModel @Inject constructor(
-    private val repository: StopPlacesRepository,
+    private val stopPlacesRepository: StopPlacesRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {
 
@@ -47,7 +47,7 @@ class NearbyStopsViewModel @Inject constructor(
 
     private fun fetchData(location: Location) {
         viewModelScope.launch {
-            _stopPlaces.value = repository.loadStopPlacesForLocation(location)
+            _stopPlaces.value = stopPlacesRepository.loadStopPlacesForLocation(location)
         }
     }
 }
