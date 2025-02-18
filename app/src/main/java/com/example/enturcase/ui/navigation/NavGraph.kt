@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.enturcase.ui.screen.DetailsScreen
 import com.example.enturcase.ui.screen.HomeScreen
 
 @Composable
@@ -22,7 +23,7 @@ fun NavGraph(navController: NavHostController) {
             arguments = listOf(navArgument("itemId") { type = NavType.StringType })
         ) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-//            DetailsScreen(navController, itemId)
+            DetailsScreen(navController, itemId)
         }
     }
 }
