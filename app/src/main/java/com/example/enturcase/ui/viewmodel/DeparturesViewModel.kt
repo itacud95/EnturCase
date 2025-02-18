@@ -3,6 +3,7 @@ package com.example.enturcase.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.data.repository.DeparturesRepository
 import com.example.enturcase.utils.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +18,11 @@ class DeparturesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val stopPlaceId: String = savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
+    private val stopPlaceId: String =
+        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
 
-    private val _departures = MutableStateFlow<String?>(null)
-    val departures: StateFlow<String?> = _departures
+    private val _departures = MutableStateFlow<List<Departure>>(listOf())
+    val departures: StateFlow<List<Departure>> = _departures
 
     init {
         fetchDepartures()

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.enturcase.ui.components.DepartureItem
 import com.example.enturcase.ui.theme.EnturCaseTheme
 import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 
@@ -40,7 +42,7 @@ fun DeparturesScreen(
         Scaffold(topBar = {
             TopAppBar(title = { Text("Details Screen") }, navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
             })
         }) { paddingValues ->
@@ -54,8 +56,9 @@ fun DeparturesScreen(
             ) {
                 Box(modifier = Modifier.weight(1f)) {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        item {
-                            Text(text = departures ?: "Loading...", modifier = Modifier.padding(8.dp))
+                        items(departures.size) {
+                            val departure = departures[it]
+                            DepartureItem(departure)
                         }
                     }
                 }
