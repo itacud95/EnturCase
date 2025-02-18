@@ -13,14 +13,14 @@ import com.example.enturcase.ui.viewmodel.MainViewModel
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    myViewModel: MainViewModel,
+//    myViewModel: MainViewModel,
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
-            HomeScreen(navController, myViewModel)
+            HomeScreen(navController)
         }
         composable(
             route = Screen.Details.route,

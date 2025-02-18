@@ -67,6 +67,7 @@ dependencies {
     // hilt: https://developer.android.com/training/dependency-injection/hilt-android
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     // gson
     implementation("com.google.code.gson:gson:2.10.1")
     // graphql

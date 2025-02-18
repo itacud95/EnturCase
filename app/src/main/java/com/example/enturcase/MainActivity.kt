@@ -103,7 +103,7 @@ object StopPlaceFormatter {
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val viewModel: MainViewModel by viewModels()
+//    private val viewModel: MainViewModel by viewModels()
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -179,18 +179,18 @@ class MainActivity : ComponentActivity() {
 
 //        listDeparturesForStop()
 
-        lifecycleScope.launch {
-            viewModel.data.collect { response ->
-                for (stopPlace in response){
-                    Logger.debug(stopPlace.toString())
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            viewModel.data.collect { response ->
+//                for (stopPlace in response){
+//                    Logger.debug(stopPlace.toString())
+//                }
+//            }
+//        }
 
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavGraph(navController, viewModel)
+            NavGraph(navController)
         }
     }
 }
