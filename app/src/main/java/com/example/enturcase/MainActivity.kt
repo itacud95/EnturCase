@@ -24,13 +24,15 @@ import com.example.enturcase.utils.Logger
 import com.example.enturcase.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 import okhttp3.internal.format
 
 object GraphQLClient {
-    val apolloClient: ApolloClient = ApolloClient.Builder()
+    private val apolloClient: ApolloClient = ApolloClient.Builder()
         .serverUrl("https://api.entur.io/journey-planner/v3/graphql")
         .build()
 
@@ -72,7 +74,7 @@ object StopPlaceFormatter {
             estimatedCalls.forEachIndexed { index, call ->
                 builder.append("Departure ${index + 1}:\n")
                 builder.append("   - Destination: ${call.destinationDisplay?.frontText ?: "Unknown"}\n")
-                builder.append("   - Realtime: ${if (call.realtime == true) "Yes" else "No"}\n")
+                builder.append("   - Realtime: ${if (call.realtime) "Yes" else "No"}\n")
                 builder.append("   - Aimed Arrival: ${call.aimedArrivalTime ?: "N/A"}\n")
                 builder.append("   - Expected Arrival: ${call.expectedArrivalTime ?: "N/A"}\n")
                 builder.append("   - Aimed Departure: ${call.aimedDepartureTime ?: "N/A"}\n")
@@ -163,18 +165,22 @@ class MainActivity : ComponentActivity() {
         val distance: Double,
     )
 
+    private fun listDeparturesForStop() {
+        val stopPlaceId = "NSR:StopPlace:6547"
+        val stopPlace = GraphQLClient.fetchStopPlace(stopPlaceId)
+        val formattedData = StopPlaceFormatter.formatStopPlace(stopPlace)
+        Logger.debug(formattedData)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Logger.debug("oncreate")
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//        checkAndRequestPermissions()
+        checkAndRequestPermissions()
 
-        val stopPlaceId = "NSR:StopPlace:6547"
-        val stopPlace = GraphQLClient.fetchStopPlace(stopPlaceId)
-        val formattedData = StopPlaceFormatter.formatStopPlace(stopPlace)
-        Logger.debug(formattedData)
 
+//        listDeparturesForStop()
 
 
         viewModel.data.observe(this) { response ->
@@ -183,10 +189,14 @@ class MainActivity : ComponentActivity() {
             val json = element.asJsonObject
 
             val features = json.getAsJsonArray("features")
-            for (feature in features){
-                Logger.debug("feature: $feature")
-            }
+            val gson = Gson()
 
+            for (feature in features){
+                val featureObj = feature.asJsonObject
+                val properties: JsonObject = featureObj.getAsJsonObject("properties") // Fix: getAsJsonObject instead of getAsJsonArray
+                val stopPlace: StopPlace = gson.fromJson(properties, StopPlace::class.java)
+                Logger.debug("stopPlace: $stopPlace")
+            }
         }
 
         enableEdgeToEdge()
