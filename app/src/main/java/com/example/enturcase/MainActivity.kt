@@ -153,7 +153,7 @@ class MainActivity : ComponentActivity() {
                 if (location != null) {
                     Logger.debug("Got location: ${location.latitude}, ${location.longitude}")
 
-                    viewModel.fetchData(Location(location.latitude, location.longitude))
+//                    viewModel.fetchData(Location(location.latitude, location.longitude))
                 } else {
                     Logger.debug("Did not get location")
                 }
