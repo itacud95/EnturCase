@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -38,7 +43,14 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Stop Places") }
+                title = { Text("Stop Places") },
+                actions = {
+                    IconButton(onClick = {
+//                        viewModel.refreshData()
+                    }) {
+                        Icon(imageVector = Icons.Default.Refresh, contentDescription = "Reload")
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -57,4 +69,3 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
         }
     }
 }
-
