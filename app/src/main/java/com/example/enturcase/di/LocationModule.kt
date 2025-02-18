@@ -1,7 +1,6 @@
 package com.example.enturcase.di
 
 import android.content.Context
-import com.example.enturcase.data.provider.LocationProvider
 import com.example.enturcase.data.repository.LocationRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -12,10 +11,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
 object LocationModule {
-
     @Provides
     @Singleton
     fun provideFusedLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
@@ -24,16 +23,10 @@ object LocationModule {
 
     @Provides
     @Singleton
-    fun provideLocationProvider(
+    fun provideLocationRepository(
         @ApplicationContext context: Context,
         fusedLocationProviderClient: FusedLocationProviderClient
-    ): LocationProvider {
-        return LocationProvider(context, fusedLocationProviderClient)
-    }
-
-    @Provides
-    @Singleton
-    fun provideLocationRepository(locationProvider: LocationProvider): LocationRepository {
-        return LocationRepository(locationProvider)
+    ): LocationRepository {
+        return LocationRepository(context, fusedLocationProviderClient)
     }
 }

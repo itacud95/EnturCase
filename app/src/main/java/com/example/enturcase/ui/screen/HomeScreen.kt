@@ -14,13 +14,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.NavController
 import com.example.enturcase.ui.components.StopPlaceItem
 import com.example.enturcase.ui.navigation.Screen
@@ -29,16 +25,8 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, viewModel: NearbyStopsViewModel = hiltViewModel()) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val locationFlow = remember(viewModel, lifecycleOwner) {
-        viewModel.locationFlow.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-    }
-
-    val location by locationFlow.collectAsState(initial = null)
-//    val data by viewModel.data.collectAsState()
-
-    val stopPlaces by viewModel.data.collectAsState()
+fun HomeScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel = hiltViewModel()) {
+    val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
 
     EnturCaseTheme {
         Scaffold(
@@ -47,7 +35,7 @@ fun HomeScreen(navController: NavController, viewModel: NearbyStopsViewModel = h
                     title = { Text("Stop Places") },
                     actions = {
                         IconButton(onClick = {
-//                        viewModel.refreshData()
+                            nearbyStopsViewModel.refreshData()
                         }) {
                             Icon(imageVector = Icons.Default.Refresh, contentDescription = "Reload")
                         }
@@ -64,7 +52,8 @@ fun HomeScreen(navController: NavController, viewModel: NearbyStopsViewModel = h
                 items(stopPlaces.size) {
                     val stopPlace = stopPlaces[it]
                     StopPlaceItem(stopPlace) {
-                        navController.navigate(Screen.Details.createRoute(stopPlace.source_id)) }
+                        navController.navigate(Screen.Details.createRoute(stopPlace.source_id))
+                    }
                 }
             }
         }
