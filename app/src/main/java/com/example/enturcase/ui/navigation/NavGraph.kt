@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.enturcase.ui.screen.DetailsScreen
 import com.example.enturcase.ui.screen.HomeScreen
-import com.example.enturcase.ui.viewmodel.MainViewModel
 
 @Composable
 fun NavGraph(

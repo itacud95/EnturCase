@@ -22,42 +22,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.enturcase.ui.theme.EnturCaseTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(navController: NavController, itemId: String?) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Details Screen") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
+    EnturCaseTheme {
+        Scaffold(topBar = {
+            TopAppBar(title = { Text("Details Screen") }, navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                 }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Item ID: ${itemId ?: "Unknown"}",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { navController.popBackStack() }
+            })
+        }) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Go Back")
+                Text(
+                    text = "Item ID: ${itemId ?: "Unknown"}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(onClick = { navController.popBackStack() }) {
+                    Text(text = "Go Back")
+                }
             }
         }
     }

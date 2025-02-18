@@ -25,11 +25,11 @@ import androidx.navigation.NavController
 import com.example.enturcase.ui.components.StopPlaceItem
 import com.example.enturcase.ui.navigation.Screen
 import com.example.enturcase.ui.theme.EnturCaseTheme
-import com.example.enturcase.ui.viewmodel.MainViewModel
+import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController, viewModel: NearbyStopsViewModel = hiltViewModel()) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val locationFlow = remember(viewModel, lifecycleOwner) {
         viewModel.locationFlow.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
@@ -64,7 +64,7 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel = hiltView
                 items(stopPlaces.size) {
                     val stopPlace = stopPlaces[it]
                     StopPlaceItem(stopPlace) {
-                        navController.navigate(Screen.Details.createRoute(stopPlace.name)) }
+                        navController.navigate(Screen.Details.createRoute(stopPlace.source_id)) }
                 }
             }
         }
