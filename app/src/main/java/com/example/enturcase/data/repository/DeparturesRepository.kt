@@ -1,21 +1,19 @@
 package com.example.enturcase.data.repository
 
-import androidx.navigation.compose.ComposeNavigator
 import com.example.enturcase.GraphQLClient
 import com.example.enturcase.StopPlaceQuery
-import com.example.enturcase.utils.Logger
+import com.example.enturcase.type.TransportMode
 import javax.inject.Inject
 
 
 data class Departure(
-    val transportMode: String,
+    val transportMode: TransportMode,
     val line: String,
     val destination: String,
     val departure: String, // todo type time
 )
 
 class DeparturesRepository @Inject constructor(private val client: GraphQLClient) {
-
 
 
     // todo empty list
@@ -34,11 +32,14 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
         builder.append("------------------------------------------------\n")
 
         val departures: MutableList<Departure> = mutableListOf()
+
         val estimatedCalls = stopPlace.estimatedCalls
         estimatedCalls.forEachIndexed { _, call ->
+            val foo: TransportMode =
+                call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown
             departures.add(
                 Departure(
-                    call.serviceJourney.journeyPattern?.line?.transportMode?.name ?: "unknown",
+                    call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown,
                     call.serviceJourney.journeyPattern?.line?.name ?: "unknown",
                     call.destinationDisplay?.frontText ?: "unknown",
                     call.expectedDepartureTime.toString(),
