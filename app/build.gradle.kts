@@ -71,6 +71,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     // graphql
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
+    // navigation
+    implementation("androidx.navigation:navigation-compose:2.8.5")
 }
 
 apollo {
