@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.enturcase.data.model.Location
 import com.example.enturcase.data.model.StopPlace
 import com.example.enturcase.data.repository.LocationRepository
-import com.example.enturcase.data.repository.MyRepository
+import com.example.enturcase.data.repository.StopPlacesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NearbyStopsViewModel @Inject constructor(
-    private val repository: MyRepository,
+    private val repository: StopPlacesRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {
 

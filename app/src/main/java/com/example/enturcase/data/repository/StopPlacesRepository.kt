@@ -13,7 +13,7 @@ import okhttp3.Request
 import okhttp3.Response
 import javax.inject.Inject
 
-class MyRepository @Inject constructor(private val client: OkHttpClient) {
+class StopPlacesRepository @Inject constructor(private val client: OkHttpClient) {
 
     suspend fun loadStopPlacesForLocation(location: Location): List<StopPlace> {
         val response = fetchData(location) ?: return listOf()
