@@ -13,10 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
@@ -28,6 +30,8 @@ import com.example.enturcase.ui.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 object GraphQLClient {
@@ -173,32 +177,21 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         checkAndRequestPermissions()
 
-
 //        listDeparturesForStop()
 
-
-        viewModel.data.observe(this) { response ->
-//            Logger.debug("observe data: $response")
-            for (stopPlace in response){
-                Logger.debug(stopPlace.toString())
+        lifecycleScope.launch {
+            viewModel.data.collect { response ->
+                for (stopPlace in response){
+                    Logger.debug(stopPlace.toString())
+                }
             }
         }
 
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavGraph(navController)
+            NavGraph(navController, viewModel)
         }
-//        setContent {
-//            EnturCaseTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//                }
-//            }
-//        }
     }
 }
 
