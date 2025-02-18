@@ -64,5 +64,8 @@ dependencies {
     // hilt: https://developer.android.com/training/dependency-injection/hilt-android
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    // gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
 }

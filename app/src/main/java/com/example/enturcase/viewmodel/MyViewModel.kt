@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(private val repository: MyRepository) : 
     fun fetchData(latitude: Double, longitude: Double) {
         viewModelScope.launch {
             _data.value = repository.fetchDataFromPosition(latitude, longitude)
-                Logger.debug("response: ${data.value}")
+                // Logger.debug("response: ${data.value}")
         }
     }
 }

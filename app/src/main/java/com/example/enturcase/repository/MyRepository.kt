@@ -24,6 +24,8 @@ class MyRepository @Inject constructor(private val client: OkHttpClient) {
             try {
                 client.newCall(request).execute().use { response: Response ->
                     if (response.isSuccessful) {
+//                        val source = response.body?.source()
+//                        source?.buffer?.clone()?.readUtf8()
                         response.body?.string()
                     } else {
                         "Error: ${response.code}"

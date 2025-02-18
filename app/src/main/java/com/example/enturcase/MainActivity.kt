@@ -22,7 +22,11 @@ import com.example.enturcase.utils.Logger
 import com.example.enturcase.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
+
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -87,16 +91,29 @@ class MainActivity : ComponentActivity() {
             }
     }
 
+    data class StopPlace(
+        val name: String,
+        val label: String,
+        val distance: Double,
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Logger.debug("oncreate")
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        checkAndRequestPermissions()
+//        checkAndRequestPermissions()
 
         viewModel.data.observe(this) { response ->
             Logger.debug("observe data: $response")
-//            textView.text = response
+            val element = JsonParser.parseString(response)
+            val json = element.asJsonObject
+
+            val features = json.getAsJsonArray("features")
+            for (feature in features){
+                Logger.debug("feature: $feature")
+            }
+
         }
 
         enableEdgeToEdge()
