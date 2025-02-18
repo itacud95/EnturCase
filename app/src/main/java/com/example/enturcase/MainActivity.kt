@@ -19,17 +19,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
+import com.example.enturcase.data.model.Location
 import com.example.enturcase.ui.theme.EnturCaseTheme
 import com.example.enturcase.utils.Logger
 import com.example.enturcase.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
-import okhttp3.internal.format
 
 object GraphQLClient {
     private val apolloClient: ApolloClient = ApolloClient.Builder()
@@ -149,7 +146,8 @@ class MainActivity : ComponentActivity() {
             .addOnSuccessListener { location ->
                 if (location != null) {
                     Logger.debug("Got location: ${location.latitude}, ${location.longitude}")
-                    viewModel.fetchData(location.latitude, location.longitude)
+
+                    viewModel.fetchData(Location(location.latitude, location.longitude))
                 } else {
                     Logger.debug("Did not get location")
                 }
@@ -158,12 +156,6 @@ class MainActivity : ComponentActivity() {
                 Logger.debug("Failed to get location: ${it.message}")
             }
     }
-
-    data class StopPlace(
-        val name: String,
-        val label: String,
-        val distance: Double,
-    )
 
     private fun listDeparturesForStop() {
         val stopPlaceId = "NSR:StopPlace:6547"
@@ -184,18 +176,9 @@ class MainActivity : ComponentActivity() {
 
 
         viewModel.data.observe(this) { response ->
-            Logger.debug("observe data: $response")
-            val element = JsonParser.parseString(response)
-            val json = element.asJsonObject
-
-            val features = json.getAsJsonArray("features")
-            val gson = Gson()
-
-            for (feature in features){
-                val featureObj = feature.asJsonObject
-                val properties: JsonObject = featureObj.getAsJsonObject("properties") // Fix: getAsJsonObject instead of getAsJsonArray
-                val stopPlace: StopPlace = gson.fromJson(properties, StopPlace::class.java)
-                Logger.debug("stopPlace: $stopPlace")
+//            Logger.debug("observe data: $response")
+            for (stopPlace in response){
+                Logger.debug(stopPlace.toString())
             }
         }
 
