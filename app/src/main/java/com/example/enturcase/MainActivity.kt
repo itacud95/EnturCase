@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.example.enturcase.ui.navigation.NavGraph
 import com.example.enturcase.ui.theme.EnturCaseTheme
+import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 import com.example.enturcase.utils.Logger
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -92,8 +94,8 @@ object StopPlaceFormatter {
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-//    private val viewModel: MainViewModel by viewModels()
+//    private lateinit var fusedLocationClient: FusedLocationProviderClient
+//    private val viewModel: NearbyStopsViewModel by viewModels()
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -101,7 +103,7 @@ class MainActivity : ComponentActivity() {
         if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
         ) {
-            getLastKnownLocation()
+//            getLastKnownLocation()
         } else {
             Logger.debug("Location permission denied")
         }
@@ -115,7 +117,7 @@ class MainActivity : ComponentActivity() {
                 this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            getLastKnownLocation()
+//            getLastKnownLocation()
         } else {
             locationPermissionRequest.launch(
                 arrayOf(
@@ -126,32 +128,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun getLastKnownLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Logger.debug("Permissions are missing, requesting again")
-            return
-        }
-
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    Logger.debug("Got location: ${location.latitude}, ${location.longitude}")
-
-//                    viewModel.fetchData(Location(location.latitude, location.longitude))
-                } else {
-                    Logger.debug("Did not get location")
-                }
-            }
-            .addOnFailureListener {
-                Logger.debug("Failed to get location: ${it.message}")
-            }
-    }
+//    private fun getLastKnownLocation() {
+//        if (ActivityCompat.checkSelfPermission(
+//                this, Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED &&
+//            ActivityCompat.checkSelfPermission(
+//                this, Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            Logger.debug("Permissions are missing, requesting again")
+//            return
+//        }
+//
+//        fusedLocationClient.lastLocation
+//            .addOnSuccessListener { location ->
+//                if (location != null) {
+//                    Logger.debug("Got location: ${location.latitude}, ${location.longitude}")
+//                } else {
+//                    Logger.debug("Did not get location")
+//                }
+//            }
+//            .addOnFailureListener {
+//                Logger.debug("Failed to get location: ${it.message}")
+//            }
+//    }
 
     private fun listDeparturesForStop() {
         val stopPlaceId = "NSR:StopPlace:6547"
@@ -164,8 +164,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Logger.debug("oncreate")
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        checkAndRequestPermissions()
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//        checkAndRequestPermissions()
 
 //        listDeparturesForStop()
 

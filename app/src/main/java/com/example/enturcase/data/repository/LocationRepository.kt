@@ -9,7 +9,11 @@ class LocationRepository @Inject constructor(
     private val locationProvider: LocationProvider
 ) {
 
-    fun getLocationUpdates(): Flow<Location?> {
-        return locationProvider.getLocationUpdates()
+    suspend fun getLocationUpdates(): Location? {
+        return locationProvider.getCurrentLocation()
     }
+
+//    fun getLocationUpdates(): Flow<Location?> {
+//        return locationProvider.getLocationUpdates()
+//    }
 }

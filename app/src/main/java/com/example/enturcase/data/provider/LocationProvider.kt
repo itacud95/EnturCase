@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Looper
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.enturcase.utils.Logger
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -15,12 +16,51 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
+
+@Singleton
+class LocationProvider @Inject constructor(
+    private val context: Context,
+    private val fusedLocationProviderClient: FusedLocationProviderClient
+) {
+    @SuppressLint("MissingPermission")
+    suspend fun getCurrentLocation(): Location? {
+
+        if (!hasLocationPermission()) {
+            Logger.debug("missing location permission")
+            return null
+        }
+
+        return suspendCoroutine { continuation ->
+            fusedLocationProviderClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                null
+            ).addOnSuccessListener { location ->
+                continuation.resume(location)
+            }.addOnFailureListener { e ->
+                Logger.debug("Error fetching location: ${e.message}")
+                continuation.resume(null)
+            }
+        }
+    }
+
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+}
+
+/*
 @Singleton
 class LocationProvider @Inject constructor(
     private val context: Context,
@@ -83,3 +123,4 @@ class LocationProvider @Inject constructor(
         ) == PackageManager.PERMISSION_GRANTED
     }
 }
+*/
