@@ -22,7 +22,7 @@ import com.apollographql.apollo3.exception.ApolloException
 import com.example.enturcase.data.model.Location
 import com.example.enturcase.ui.theme.EnturCaseTheme
 import com.example.enturcase.utils.Logger
-import com.example.enturcase.viewmodel.MainViewModel
+import com.example.enturcase.ui.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint

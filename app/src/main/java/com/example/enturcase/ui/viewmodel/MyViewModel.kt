@@ -1,4 +1,4 @@
-package com.example.enturcase.viewmodel
+package com.example.enturcase.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
