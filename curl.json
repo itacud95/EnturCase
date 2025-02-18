@@ -1,0 +1,428 @@
+// https://api.entur.io/geocoder/v1/reverse?point.lat=59.909029&point.lon=10.745917&boundary.circle.radius=1&size=10&layers=venue
+// lat 59.909029
+// lon 10.745917
+
+{
+    "geocoding": {
+        "version": "0.2",
+        "attribution": "http://pelias.mapzen.com/v1/attribution",
+        "query": {
+            "layers": [
+                "venue"
+            ],
+            "sources": [
+                "openstreetmap",
+                "whosonfirst"
+            ],
+            "size": 10,
+            "private": false,
+            "point.lat": 59.909029,
+            "point.lon": 10.745917,
+            "boundary.circle.radius": 1,
+            "boundary.circle.lat": 59.909029,
+            "boundary.circle.lon": 10.745917,
+            "lang": {
+                "name": "English",
+                "iso6391": "en",
+                "iso6393": "eng",
+                "defaulted": true
+            },
+            "querySize": 20
+        },
+        "engine": {
+            "name": "Pelias",
+            "author": "Mapzen",
+            "version": "1.0"
+        },
+        "timestamp": 1739815133082
+    },
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.746901,
+                    59.910525
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:59601",
+                "gid": "openstreetmap:venue:NSR:StopPlace:59601",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:59601",
+                "name": "Dronningens gate",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:59601",
+                "confidence": 0.7,
+                "distance": 0.176,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Dronningens gate, Oslo",
+                "category": [
+                    "onstreetTram",
+                    "onstreetBus",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.744216,
+                    59.910398
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:4016",
+                "gid": "whosonfirst:venue:NSR:StopPlace:4016",
+                "layer": "venue",
+                "source": "whosonfirst",
+                "source_id": "NSR:StopPlace:4016",
+                "name": "Kvadraturen",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:4016",
+                "confidence": 0.7,
+                "distance": 0.18,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Kvadraturen, Oslo",
+                "category": [
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.747142,
+                    59.906629
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:61483",
+                "gid": "whosonfirst:venue:NSR:StopPlace:61483",
+                "layer": "venue",
+                "source": "whosonfirst",
+                "source_id": "NSR:StopPlace:61483",
+                "name": "Salt brygge",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:61483",
+                "confidence": 0.6,
+                "distance": 0.276,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Salt brygge, Oslo",
+                "category": [
+                    "ferryStop"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.745452,
+                    59.912961
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:58358",
+                "gid": "openstreetmap:venue:NSR:StopPlace:58358",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:58358",
+                "name": "Stortorvet",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:58358",
+                "confidence": 0.6,
+                "distance": 0.439,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Stortorvet, Oslo",
+                "category": [
+                    "onstreetBus",
+                    "onstreetTram"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.741697,
+                    59.911798
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:61633",
+                "gid": "openstreetmap:venue:NSR:StopPlace:61633",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:61633",
+                "name": "Øvre Slottsgate",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:61633",
+                "confidence": 0.6,
+                "distance": 0.388,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Øvre Slottsgate, Oslo",
+                "category": [
+                    "onstreetTram",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.743256,
+                    59.913437
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:4029",
+                "gid": "whosonfirst:venue:NSR:StopPlace:4029",
+                "layer": "venue",
+                "source": "whosonfirst",
+                "source_id": "NSR:StopPlace:4029",
+                "name": "Stortinget",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:4029",
+                "confidence": 0.6,
+                "distance": 0.513,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Stortinget, Oslo",
+                "category": [
+                    "metroStation"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.75038,
+                    59.911898
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:58366",
+                "gid": "openstreetmap:venue:NSR:StopPlace:58366",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:58366",
+                "name": "Jernbanetorget",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:58366",
+                "confidence": 0.6,
+                "distance": 0.406,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Jernbanetorget, Oslo",
+                "category": [
+                    "onstreetBus",
+                    "onstreetTram",
+                    "metroStation",
+                    "onstreetBus",
+                    "onstreetBus",
+                    "onstreetTram",
+                    "onstreetBus",
+                    "onstreetBus",
+                    "onstreetBus",
+                    "onstreetBus",
+                    "onstreetBus",
+                    "onstreetTram",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.743266,
+                    59.902966
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:59222",
+                "gid": "openstreetmap:venue:NSR:StopPlace:59222",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:59222",
+                "name": "Vippetangen ferjeterminal",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:59222",
+                "confidence": 0.6,
+                "distance": 0.692,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Vippetangen ferjeterminal, Oslo",
+                "category": [
+                    "harbourPort",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.753051,
+                    59.910357
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:59872",
+                "gid": "openstreetmap:venue:NSR:StopPlace:59872",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:59872",
+                "name": "Oslo S",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:59872",
+                "confidence": 0.6,
+                "distance": 0.426,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Oslo S, Oslo",
+                "category": [
+                    "onstreetBus",
+                    "railStation",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "OST:TariffZone:227",
+                    "BRA:TariffZone:311",
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    10.75142,
+                    59.913938
+                ]
+            },
+            "properties": {
+                "id": "NSR:StopPlace:61444",
+                "gid": "openstreetmap:venue:NSR:StopPlace:61444",
+                "layer": "venue",
+                "source": "openstreetmap",
+                "source_id": "NSR:StopPlace:61444",
+                "name": "Storgata",
+                "street": "NOT_AN_ADDRESS-NSR:StopPlace:61444",
+                "confidence": 0.6,
+                "distance": 0.628,
+                "accuracy": "point",
+                "country_a": "NOR",
+                "county": "Oslo",
+                "county_gid": "whosonfirst:county:KVE:TopographicPlace:03",
+                "locality": "Oslo",
+                "locality_gid": "whosonfirst:locality:KVE:TopographicPlace:0301",
+                "label": "Storgata, Oslo",
+                "category": [
+                    "onstreetTram",
+                    "onstreetBus"
+                ],
+                "tariff_zones": [
+                    "RUT:TariffZone:1",
+                    "RUT:FareZone:4"
+                ]
+            }
+        }
+    ],
+    "bbox": [
+        10.741697,
+        59.902966,
+        10.753051,
+        59.913938
+    ]
+}
