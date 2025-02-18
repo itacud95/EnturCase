@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.ui.components.StopPlaceItem
 import com.example.enturcase.ui.navigation.Screen
 import com.example.enturcase.ui.viewmodel.MainViewModel
 
@@ -57,18 +58,3 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel) {
     }
 }
 
-@Composable
-fun StopPlaceItem(stopPlace: StopPlace, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = stopPlace.label, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Text(text = "Distance: ${stopPlace.distance} km", fontSize = 14.sp)
-        }
-    }
-}
