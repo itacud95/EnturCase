@@ -3,12 +3,14 @@ package com.example.enturcase.data.repository
 import com.example.enturcase.GraphQLClient
 import com.example.enturcase.StopPlaceQuery
 import com.example.enturcase.type.TransportMode
+import com.example.enturcase.utils.Logger
 import javax.inject.Inject
 
 
 data class Departure(
     val transportMode: TransportMode,
-    val line: String,
+    val lineId: Int,
+    val lineName: String,
     val destination: String,
     val departure: String, // todo type time
 )
@@ -20,6 +22,12 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
     fun listDeparturesForStop(stopPlaceId: String): List<Departure> {
         val result = client.fetchStopPlace(stopPlaceId)
         return formatStopPlace(result)
+    }
+
+    private fun extractLineId(lineIdString: String?): Int {
+        val regex = Regex("\\d+$")
+        return lineIdString?.let { regex.find(it)?.value?.toIntOrNull() } ?: 0
+
     }
 
     private fun formatStopPlace(stopPlace: StopPlaceQuery.StopPlace?): List<Departure> {
@@ -35,11 +43,14 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
 
         val estimatedCalls = stopPlace.estimatedCalls
         estimatedCalls.forEachIndexed { _, call ->
-            val foo: TransportMode =
-                call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown
+
+            Logger.debug("here comes one")
+            Logger.debug(call.toString())
+
             departures.add(
                 Departure(
                     call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown,
+                    extractLineId(call.serviceJourney.journeyPattern?.line?.id),
                     call.serviceJourney.journeyPattern?.line?.name ?: "unknown",
                     call.destinationDisplay?.frontText ?: "unknown",
                     call.expectedDepartureTime.toString(),
