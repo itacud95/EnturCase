@@ -27,27 +27,69 @@ import com.google.android.gms.location.LocationServices
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
-
+import okhttp3.internal.format
 
 object GraphQLClient {
     val apolloClient: ApolloClient = ApolloClient.Builder()
         .serverUrl("https://api.entur.io/journey-planner/v3/graphql")
         .build()
 
-    fun fetchStopPlace(stopPlaceId: String) {
-        runBlocking {
+    fun fetchStopPlace(stopPlaceId: String): StopPlaceQuery.StopPlace? {
+        return runBlocking {
             try {
                 val response = apolloClient.query(StopPlaceQuery(stopPlaceId)).execute()
 
                 if (response.hasErrors()) {
                     Logger.debug("GraphQL Error: ${response.errors}")
-                } else {
-                    Logger.debug("GraphQL Response: ${response.data}")
+                    return@runBlocking null
                 }
+
+                return@runBlocking response.data?.stopPlace
             } catch (e: ApolloException) {
                 Logger.debug("Request failed: ${e.message}")
+                return@runBlocking null
             }
         }
+    }
+}
+
+
+object StopPlaceFormatter {
+    fun formatStopPlace(stopPlace: StopPlaceQuery.StopPlace?): String {
+        if (stopPlace == null) {
+            return "No stop place data available."
+        }
+
+        val builder = StringBuilder()
+        builder.append("Stop Place: ${stopPlace.name} (ID: ${stopPlace.id})\n")
+        builder.append("------------------------------------------------\n")
+
+        val estimatedCalls = stopPlace.estimatedCalls
+        if (estimatedCalls.isEmpty()) {
+            builder.append("No upcoming departures found.\n")
+        } else {
+            builder.append("Upcoming Departures:\n\n")
+            estimatedCalls.forEachIndexed { index, call ->
+                builder.append("Departure ${index + 1}:\n")
+                builder.append("   - Destination: ${call.destinationDisplay?.frontText ?: "Unknown"}\n")
+                builder.append("   - Realtime: ${if (call.realtime == true) "Yes" else "No"}\n")
+                builder.append("   - Aimed Arrival: ${call.aimedArrivalTime ?: "N/A"}\n")
+                builder.append("   - Expected Arrival: ${call.expectedArrivalTime ?: "N/A"}\n")
+                builder.append("   - Aimed Departure: ${call.aimedDepartureTime ?: "N/A"}\n")
+                builder.append("   - Expected Departure: ${call.expectedDepartureTime ?: "N/A"}\n")
+                builder.append("   - Quay ID: ${call.quay?.id ?: "N/A"}\n")
+
+                val line = call.serviceJourney?.journeyPattern?.line
+                if (line != null) {
+                    builder.append("   - Line: ${line.name} (ID: ${line.id})\n")
+                    builder.append("   - Transport Mode: ${line.transportMode}\n")
+                }
+
+                builder.append("------------------------------------------------\n")
+            }
+        }
+
+        return builder.toString()
     }
 }
 
@@ -129,7 +171,10 @@ class MainActivity : ComponentActivity() {
 //        checkAndRequestPermissions()
 
         val stopPlaceId = "NSR:StopPlace:6547"
-        GraphQLClient.fetchStopPlace(stopPlaceId)
+        val stopPlace = GraphQLClient.fetchStopPlace(stopPlaceId)
+        val formattedData = StopPlaceFormatter.formatStopPlace(stopPlace)
+        Logger.debug(formattedData)
+
 
 
         viewModel.data.observe(this) { response ->
