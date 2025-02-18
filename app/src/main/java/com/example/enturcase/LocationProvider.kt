@@ -26,31 +26,33 @@ class LocationProvider @Inject constructor(
     private val context: Context,
     private val fusedLocationProviderClient: FusedLocationProviderClient
 ) {
-
     private var lastLocation: Location? = null
 
     @SuppressLint("MissingPermission")
     fun getLocationUpdates(): Flow<Location?> = callbackFlow {
         if (!hasLocationPermission()) {
-            close() // Stop the flow if permissions are missing
+            close()
             return@callbackFlow
         }
 
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10_000L)
-            .setMinUpdateIntervalMillis(5000L) // Minimum interval
-            .setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL) // Respect permissions
-            .setWaitForAccurateLocation(true) // Wait for high-accuracy fixes
+            .setMinUpdateIntervalMillis(5000L)
+            .setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+            .setWaitForAccurateLocation(true)
             .build()
 
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.locations.lastOrNull()?.let { newLocation ->
-                    // Check if the position has significantly changed
-                    if (lastLocation == null || hasMovedSignificantly(lastLocation!!, newLocation)) {
+
+                    if (lastLocation == null || hasMovedSignificantly(
+                            lastLocation!!,
+                            newLocation
+                        )
+                    ) {
                         lastLocation = newLocation
                         trySend(newLocation)
-                    }
-                    else {
+                    } else {
                         Logger.debug("pos did not change")
                     }
                 }
@@ -64,13 +66,15 @@ class LocationProvider @Inject constructor(
         )
 
         awaitClose {
+            Logger.debug("close!")
+            lastLocation = null
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         }
     }
 
     private fun hasMovedSignificantly(oldLocation: Location, newLocation: Location): Boolean {
-        val distance = oldLocation.distanceTo(newLocation) // Distance in meters
-        return distance > 10 // Only update if moved more than 10 meters
+        val distance = oldLocation.distanceTo(newLocation)
+        return distance > 10
     }
 
     private fun hasLocationPermission(): Boolean {
