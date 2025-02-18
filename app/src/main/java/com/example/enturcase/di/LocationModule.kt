@@ -1,7 +1,7 @@
 package com.example.enturcase.di
 
 import android.content.Context
-import com.example.enturcase.LocationProvider
+import com.example.enturcase.data.provider.LocationProvider
 import com.example.enturcase.data.repository.LocationRepository
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

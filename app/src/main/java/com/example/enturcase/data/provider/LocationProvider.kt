@@ -1,4 +1,4 @@
-package com.example.enturcase
+package com.example.enturcase.data.provider
 
 import android.Manifest
 import android.annotation.SuppressLint
