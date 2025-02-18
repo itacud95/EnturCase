@@ -24,7 +24,6 @@ import com.example.enturcase.utils.Logger
 import com.example.enturcase.viewmodel.MainViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
@@ -35,10 +34,10 @@ object GraphQLClient {
         .serverUrl("https://api.entur.io/journey-planner/v3/graphql")
         .build()
 
-    fun fetchStopPlace() {
+    fun fetchStopPlace(stopPlaceId: String) {
         runBlocking {
             try {
-                val response = apolloClient.query(StopPlaceQuery()).execute()
+                val response = apolloClient.query(StopPlaceQuery(stopPlaceId)).execute()
 
                 if (response.hasErrors()) {
                     Logger.debug("GraphQL Error: ${response.errors}")
@@ -129,7 +128,8 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //        checkAndRequestPermissions()
 
-        GraphQLClient.fetchStopPlace()
+        val stopPlaceId = "NSR:StopPlace:6547"
+        GraphQLClient.fetchStopPlace(stopPlaceId)
 
 
         viewModel.data.observe(this) { response ->
