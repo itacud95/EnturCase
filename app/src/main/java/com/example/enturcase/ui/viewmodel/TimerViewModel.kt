@@ -19,10 +19,29 @@ class TimerViewModel : ViewModel() {
     fun startTimer(targetTime: String) {
         viewModelScope.launch {
             while (true) {
-                val remaining = getRemainingTime(targetTime)
+                val remaining = getRemainingMinutes(targetTime)
                 _timeRemaining.update { it + (targetTime to remaining) }
-                kotlinx.coroutines.delay(1000L) // Update every second
+                kotlinx.coroutines.delay(1000L) // todo: every 10
             }
+        }
+    }
+
+    private fun getRemainingMinutes(targetTime: String): String {
+        return try {
+            val targetDateTime = ZonedDateTime.parse(targetTime)
+            val now = ZonedDateTime.now()
+            val duration = Duration.between(now, targetDateTime)
+
+            val minutesLeft = duration.toMinutes()
+
+            when {
+                minutesLeft > 60 -> ""
+                minutesLeft < 0 -> "Time expired"
+                minutesLeft == 0L -> "Now"
+                else -> "$minutesLeft min"
+            }
+        } catch (e: Exception) {
+            "Invalid date"
         }
     }
 
