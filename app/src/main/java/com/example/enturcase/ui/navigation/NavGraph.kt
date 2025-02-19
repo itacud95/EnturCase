@@ -29,7 +29,7 @@ fun NavGraph(
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
-            HomeScreen(navController, locationViewModel)
+            HomeScreen(navController)
         }
 
         composable(Screen.StopPlaces.route) {
