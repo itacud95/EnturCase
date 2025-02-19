@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,8 +18,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,15 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.enturcase.domain.model.Departure
-import com.example.enturcase.domain.model.StopPlace
 import com.example.enturcase.type.TransportMode
 import com.example.enturcase.ui.components.DepartureItem
 import com.example.enturcase.ui.events.UiEvent
 import com.example.enturcase.ui.theme.EnturCaseTheme
-import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import java.time.ZonedDateTime
 
 data class DeparturesContent(
+    val stopPlaceName: String,
     val departures: List<Departure>,
     val timeLeft: Map<Departure, String>, // todo: naming
 )
@@ -47,6 +43,7 @@ fun DepartureScreenPreview() {
     DeparturesScreen(
         rememberNavController(),
         DeparturesContent(
+            "Tøyen",
             listOf(
                 Departure(TransportMode.bus, 123, "Skøyen",  ZonedDateTime.now()),
                 Departure(TransportMode.tram, 12, "Ljabru",  ZonedDateTime.now()),
@@ -66,7 +63,7 @@ fun DeparturesScreen(
     EnturCaseTheme {
         Scaffold(topBar = {
             TopAppBar(
-                title = { Text("Details Screen") },
+                title = { Text(content.stopPlaceName) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(

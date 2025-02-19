@@ -21,6 +21,7 @@ class DeparturesScreenTest {
     val rule = createComposeRule()
 
     private val content = DeparturesContent(
+        "Oslo S",
         departures = listOf(
             Departure(TransportMode.bus, 123, "Skøyen", ZonedDateTime.now()),
         ),

@@ -67,6 +67,7 @@ fun NavGraph(
             arguments = listOf(navArgument("stopPlaceId") { type = NavType.StringType })
         ) { backStackEntry ->
             val stopPlaceId = backStackEntry.arguments?.getString("stopPlaceId") ?: ""
+            val stopPlaceName = backStackEntry.arguments?.getString("stopPlaceName") ?: ""
             val departuresViewModel: DeparturesViewModel = viewModel(
                 factory = DeparturesViewModelFactory(
                     DeparturesRepository(GraphQLClient),
@@ -76,6 +77,7 @@ fun NavGraph(
             val departures by departuresViewModel.departures.collectAsState()
             val timeLeft by departuresViewModel.timeRemaining.collectAsState()
             val content = DeparturesContent(
+                stopPlaceName,
                 departures,
                 timeLeft,
             )

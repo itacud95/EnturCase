@@ -74,7 +74,7 @@ fun StopPlacesScreen(
                 items(stopPlacesContent.stopPlaces.size) {
                     val stopPlace = stopPlacesContent.stopPlaces[it]
                     StopPlaceItem(stopPlace) {
-                        navController.navigate(Screen.Departures.createRoute(stopPlace.source_id))
+                        navController.navigate(Screen.Departures.createRoute(stopPlace.source_id, stopPlace.name))
                     }
                 }
             }
