@@ -4,17 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
-import com.example.enturcase.data.repository.LocationRepository
-import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.ui.navigation.NavGraph
-import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
-import com.example.enturcase.ui.viewmodel.NearbyStopsViewModelFactory
 import com.example.enturcase.utils.Logger
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.runBlocking
 
 object GraphQLClient {
@@ -42,26 +36,11 @@ object GraphQLClient {
 }
 
 class MainActivity : ComponentActivity() {
-    private val nearbyStopsViewModel: NearbyStopsViewModel by viewModels {
-        NearbyStopsViewModelFactory(
-            StopPlacesRepository(),
-            LocationRepository(
-                this, LocationServices.getFusedLocationProviderClient(this)
-            )
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Logger.debug("oncreate")
-
         enableEdgeToEdge()
         setContent {
-            val navController = rememberNavController()
-            NavGraph(
-                navController,
-                nearbyStopsViewModel,
-            )
+            NavGraph(rememberNavController())
         }
     }
 }

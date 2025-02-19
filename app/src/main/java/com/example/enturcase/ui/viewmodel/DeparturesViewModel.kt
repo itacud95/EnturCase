@@ -36,12 +36,7 @@ class DeparturesViewModelFactory(
 class DeparturesViewModel(
     private val departuresRepository: DeparturesRepository,
     private val stopPlaceId: String,
-//    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-//    private val stopPlaceId: String = ""
-//        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
-
     private val _departures = MutableStateFlow<List<Departure>>(emptyList())
     val departures: StateFlow<List<Departure>> = _departures.asStateFlow()
 

@@ -2,6 +2,7 @@ package com.example.enturcase.ui.navigation
 
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -10,19 +11,23 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.enturcase.GraphQLClient
 import com.example.enturcase.data.repository.DeparturesRepository
+import com.example.enturcase.data.repository.LocationRepository
+import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.ui.screen.DeparturesScreen
 import com.example.enturcase.ui.screen.HomeScreen
 import com.example.enturcase.ui.screen.StopPlacesScreen
 import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.ui.viewmodel.DeparturesViewModelFactory
-import com.example.enturcase.ui.viewmodel.LocationViewModel
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
+import com.example.enturcase.ui.viewmodel.NearbyStopsViewModelFactory
+import com.google.android.gms.location.LocationServices
 
 @Composable
 fun NavGraph(
-    navController: NavHostController,
-    nearbyStopsViewModel: NearbyStopsViewModel,
+    navController: NavHostController
 ) {
+    val context = LocalContext.current
+
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
@@ -32,8 +37,18 @@ fun NavGraph(
         }
 
         composable(Screen.StopPlaces.route) {
+            val nearbyStopsViewModel: NearbyStopsViewModel = viewModel(
+                factory = NearbyStopsViewModelFactory(
+                    StopPlacesRepository(),
+                    LocationRepository(
+                        context,
+                        LocationServices.getFusedLocationProviderClient(context)
+                    )
+                )
+            )
             StopPlacesScreen(navController, nearbyStopsViewModel)
         }
+
         composable(
             route = Screen.Departures.route,
             arguments = listOf(navArgument("stopPlaceId") { type = NavType.StringType })
