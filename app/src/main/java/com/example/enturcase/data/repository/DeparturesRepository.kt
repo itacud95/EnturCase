@@ -48,6 +48,7 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
             Logger.debug("here comes one")
             Logger.debug(call.toString())
 
+            // todo: make this more robust, can be other fields.
             val departure = ZonedDateTime.parse(call.expectedDepartureTime.toString())
 
             departures.add(

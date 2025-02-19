@@ -72,7 +72,7 @@ fun CountdownTimer(viewModel: TimerViewModel, departure: Departure) {
     val timeLeft by viewModel.timeRemaining.collectAsState()
     val remainingTime = timeLeft[departure] ?: "--:--:--"
     LaunchedEffect(departure) {
-        viewModel.startTimer(departure)
+        viewModel.addDeparture(departure)
     }
     Text(text = remainingTime)
 }
@@ -107,16 +107,7 @@ fun DepartureItem(
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
             ) {
-                Row {
-                    Text(
-                        text = departure.lineId.toString(),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Text(text = departure.destination, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                }
-//                Text(text = departure.departure, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = "${departure.lineId} ${departure.destination}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 CountdownTimer(viewModel, departure)
             }
         }
