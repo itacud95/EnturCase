@@ -38,8 +38,8 @@ fun StopPlacesScreenPreview() {
         rememberNavController(),
         StopPlacesContent(
             stopPlaces = listOf(
-                StopPlace("Ut i vår hage", "label", "123", 0.123),
-                StopPlace("Danskebåten", "label", "123", 0.123)
+                StopPlace("Ut i vår hage", "123", 0.123),
+                StopPlace("Danskebåten", "123", 0.123)
             )
         ),
         {},
