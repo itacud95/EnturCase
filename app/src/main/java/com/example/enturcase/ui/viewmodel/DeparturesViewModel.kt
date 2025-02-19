@@ -2,6 +2,7 @@ package com.example.enturcase.ui.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.data.repository.DeparturesRepository
@@ -19,12 +20,26 @@ import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.ZonedDateTime
 
+class DeparturesViewModelFactory(
+    private val departuresRepository: DeparturesRepository,
+    private val stopPlaceId: String,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DeparturesViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DeparturesViewModel(departuresRepository, stopPlaceId) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 class DeparturesViewModel(
     private val departuresRepository: DeparturesRepository,
+    private val stopPlaceId: String,
 //    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val stopPlaceId: String = ""
+//    private val stopPlaceId: String = ""
 //        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
 
     private val _departures = MutableStateFlow<List<Departure>>(emptyList())

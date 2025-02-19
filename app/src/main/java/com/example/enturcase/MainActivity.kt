@@ -13,17 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
-import com.example.enturcase.data.repository.DeparturesRepository
-import com.example.enturcase.data.repository.DeparturesViewModelFactory
 import com.example.enturcase.data.repository.LocationRepository
 import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.ui.navigation.NavGraph
 import com.example.enturcase.ui.theme.EnturCaseTheme
-import com.example.enturcase.ui.viewmodel.DeparturesViewModel
+import com.example.enturcase.ui.viewmodel.LocationViewModel
+import com.example.enturcase.ui.viewmodel.LocationViewModelFactory
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModelFactory
 import com.example.enturcase.utils.Logger
@@ -96,17 +94,19 @@ object StopPlaceFormatter {
 
 class MainActivity : ComponentActivity() {
 
+    private val locationViewModel: LocationViewModel by viewModels {
+        LocationViewModelFactory(
+            LocationRepository(
+                this, LocationServices.getFusedLocationProviderClient(this)
+            )
+        )
+    }
     private val nearbyStopsViewModel: NearbyStopsViewModel by viewModels {
         NearbyStopsViewModelFactory(
             StopPlacesRepository(),
             LocationRepository(
                 this, LocationServices.getFusedLocationProviderClient(this)
             )
-        )
-    }
-    private val departuresViewModel: DeparturesViewModel by viewModels {
-        DeparturesViewModelFactory(
-            DeparturesRepository(GraphQLClient)
         )
     }
 
@@ -141,44 +141,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    private fun getLastKnownLocation() {
-//        if (ActivityCompat.checkSelfPermission(
-//                this, Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED &&
-//            ActivityCompat.checkSelfPermission(
-//                this, Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            Logger.debug("Permissions are missing, requesting again")
-//            return
-//        }
-//
-//        fusedLocationClient.lastLocation
-//            .addOnSuccessListener { location ->
-//                if (location != null) {
-//                    Logger.debug("Got location: ${location.latitude}, ${location.longitude}")
-//                } else {
-//                    Logger.debug("Did not get location")
-//                }
-//            }
-//            .addOnFailureListener {
-//                Logger.debug("Failed to get location: ${it.message}")
-//            }
-//    }
-
-    private fun listDeparturesForStop() {
-        val stopPlaceId = "NSR:StopPlace:6547"
-        val stopPlace = GraphQLClient.fetchStopPlace(stopPlaceId)
-        val formattedData = StopPlaceFormatter.formatStopPlace(stopPlace)
-        Logger.debug(formattedData)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Logger.debug("oncreate")
 
 //        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//        checkAndRequestPermissions()
+        checkAndRequestPermissions()
 
 //        listDeparturesForStop()
 
@@ -195,8 +163,9 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavGraph(
                 navController,
+                locationViewModel,
                 nearbyStopsViewModel,
-                departuresViewModel,
+//                departuresViewModel,
             )
         }
     }

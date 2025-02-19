@@ -24,7 +24,7 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel) {
+fun StopPlacesScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel) {
     val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
 
     EnturCaseTheme {
@@ -51,7 +51,7 @@ fun HomeScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsVi
                 items(stopPlaces.size) {
                     val stopPlace = stopPlaces[it]
                     StopPlaceItem(stopPlace) {
-                        navController.navigate(Screen.Details.createRoute(stopPlace.source_id))
+                        navController.navigate(Screen.Departures.createRoute(stopPlace.source_id))
                     }
                 }
             }

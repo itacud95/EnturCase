@@ -33,8 +33,9 @@ import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 @Composable
 fun DeparturesScreen(
     navController: NavController,
-    viewModel: DeparturesViewModel
+    viewModel: DeparturesViewModel,
 ) {
+
     val departures by viewModel.departures.collectAsState()
     val timeLeft by viewModel.timeRemaining.collectAsState()
 

@@ -19,18 +19,6 @@ data class Departure(
     val departure: ZonedDateTime,
 )
 
-class DeparturesViewModelFactory(
-    private val departuresRepository: DeparturesRepository,
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DeparturesViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return DeparturesViewModel(departuresRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
 class DeparturesRepository(private val client: GraphQLClient) {
 
 
