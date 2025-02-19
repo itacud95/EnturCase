@@ -31,6 +31,8 @@ class NearbyStopsViewModel @Inject constructor(
     }
 
     fun refreshData() {
+        // only using this to show the user that the list did reload
+        _stopPlaces.value = emptyList()
         fetchCurrentLocation()
     }
 

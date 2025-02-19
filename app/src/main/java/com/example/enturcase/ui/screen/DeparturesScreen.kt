@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,14 +37,20 @@ fun DeparturesScreen(
     viewModel: DeparturesViewModel = hiltViewModel()
 ) {
     val departures by viewModel.departures.collectAsState()
+    val timeLeft by viewModel.timeRemaining.collectAsState()
 
     EnturCaseTheme {
         Scaffold(topBar = {
-            TopAppBar(title = { Text("Details Screen") }, navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-            })
+            TopAppBar(
+                title = { Text("Details Screen") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                })
         }) { paddingValues ->
             Column(
                 modifier = Modifier
@@ -57,7 +64,7 @@ fun DeparturesScreen(
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
                         items(departures.size) {
                             val departure = departures[it]
-                            DepartureItem(departure)
+                            DepartureItem(departure, timeLeft[departure] ?: "--")
                         }
                     }
                 }

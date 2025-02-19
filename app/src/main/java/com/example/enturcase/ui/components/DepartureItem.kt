@@ -67,17 +67,6 @@ fun TransportModeIcon(mode: TransportMode) {
     )
 }
 
-@Composable
-fun CountdownTimer(viewModel: TimerViewModel, departure: Departure) {
-    val timeLeft by viewModel.timeRemaining.collectAsState()
-    val remainingTime = timeLeft[departure] ?: "--:--:--"
-    LaunchedEffect(departure) {
-        viewModel.addDeparture(departure)
-    }
-    Text(text = remainingTime)
-}
-
-
 @Preview
 @Composable
 fun DepartureItem(
@@ -87,10 +76,8 @@ fun DepartureItem(
         "line",
         "destination",
         ZonedDateTime.now(),
-    )
+    ), remainingTime: String = "now"
 ) {
-    val viewModel: TimerViewModel = viewModel()
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,17 +85,19 @@ fun DepartureItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
-            modifier = Modifier
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             TransportModeIcon(departure.transportMode)
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 2.dp)
+                modifier = Modifier.padding(horizontal = 2.dp)
             ) {
-                Text(text = "${departure.lineId} ${departure.destination}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                CountdownTimer(viewModel, departure)
+                Text(
+                    text = "${departure.lineId} ${departure.destination}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(text = remainingTime)
             }
         }
     }
