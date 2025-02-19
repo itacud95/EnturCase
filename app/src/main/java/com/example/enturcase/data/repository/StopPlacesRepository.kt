@@ -11,9 +11,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import javax.inject.Inject
 
-class StopPlacesRepository @Inject constructor(private val client: OkHttpClient) {
+class StopPlacesRepository() {
 
     suspend fun loadStopPlacesForLocation(location: Location): List<StopPlace> {
         val response = fetchData(location) ?: return listOf()
@@ -60,6 +59,7 @@ class StopPlacesRepository @Inject constructor(private val client: OkHttpClient)
 
         return withContext(Dispatchers.IO) {
             try {
+                val client = OkHttpClient()
                 client.newCall(request).execute().use { response: Response ->
                     if (response.isSuccessful) {
                         response.body?.string()

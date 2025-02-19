@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.enturcase.ui.components.StopPlaceItem
 import com.example.enturcase.ui.navigation.Screen
@@ -25,7 +24,7 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel) {
     val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
 
     EnturCaseTheme {

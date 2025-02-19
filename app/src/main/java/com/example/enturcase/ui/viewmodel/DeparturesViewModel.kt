@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.data.repository.DeparturesRepository
 import com.example.enturcase.utils.Logger
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -19,17 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.ZonedDateTime
-import javax.inject.Inject
 
-
-@HiltViewModel
-class DeparturesViewModel @Inject constructor(
+class DeparturesViewModel(
     private val departuresRepository: DeparturesRepository,
-    savedStateHandle: SavedStateHandle
+//    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val stopPlaceId: String =
-        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
+    private val stopPlaceId: String = ""
+//        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
 
     private val _departures = MutableStateFlow<List<Departure>>(emptyList())
     val departures: StateFlow<List<Departure>> = _departures.asStateFlow()

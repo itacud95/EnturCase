@@ -12,18 +12,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
+import com.example.enturcase.data.repository.DeparturesRepository
+import com.example.enturcase.data.repository.DeparturesViewModelFactory
+import com.example.enturcase.data.repository.LocationRepository
+import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.ui.navigation.NavGraph
 import com.example.enturcase.ui.theme.EnturCaseTheme
+import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
+import com.example.enturcase.ui.viewmodel.NearbyStopsViewModelFactory
 import com.example.enturcase.utils.Logger
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 
 object GraphQLClient {
@@ -90,12 +94,21 @@ object StopPlaceFormatter {
     }
 }
 
-
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-//    private lateinit var fusedLocationClient: FusedLocationProviderClient
-//    private val viewModel: NearbyStopsViewModel by viewModels()
+    private val nearbyStopsViewModel: NearbyStopsViewModel by viewModels {
+        NearbyStopsViewModelFactory(
+            StopPlacesRepository(),
+            LocationRepository(
+                this, LocationServices.getFusedLocationProviderClient(this)
+            )
+        )
+    }
+    private val departuresViewModel: DeparturesViewModel by viewModels {
+        DeparturesViewModelFactory(
+            DeparturesRepository(GraphQLClient)
+        )
+    }
 
     private val locationPermissionRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -180,7 +193,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavGraph(navController)
+            NavGraph(
+                navController,
+                nearbyStopsViewModel,
+                departuresViewModel,
+            )
         }
     }
 }

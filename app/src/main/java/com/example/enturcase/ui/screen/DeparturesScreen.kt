@@ -24,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.enturcase.ui.components.DepartureItem
 import com.example.enturcase.ui.theme.EnturCaseTheme
@@ -34,7 +33,7 @@ import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 @Composable
 fun DeparturesScreen(
     navController: NavController,
-    viewModel: DeparturesViewModel = hiltViewModel()
+    viewModel: DeparturesViewModel
 ) {
     val departures by viewModel.departures.collectAsState()
     val timeLeft by viewModel.timeRemaining.collectAsState()

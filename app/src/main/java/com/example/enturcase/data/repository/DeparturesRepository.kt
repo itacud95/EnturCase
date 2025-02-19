@@ -1,11 +1,14 @@
 package com.example.enturcase.data.repository
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.enturcase.GraphQLClient
 import com.example.enturcase.StopPlaceQuery
 import com.example.enturcase.type.TransportMode
+import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.utils.Logger
 import java.time.ZonedDateTime
-import javax.inject.Inject
 
 
 data class Departure(
@@ -16,7 +19,19 @@ data class Departure(
     val departure: ZonedDateTime,
 )
 
-class DeparturesRepository @Inject constructor(private val client: GraphQLClient) {
+class DeparturesViewModelFactory(
+    private val departuresRepository: DeparturesRepository,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DeparturesViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DeparturesViewModel(departuresRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class DeparturesRepository(private val client: GraphQLClient) {
 
 
     // todo empty list
@@ -53,7 +68,8 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
 
             departures.add(
                 Departure(
-                    call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown,
+                    call.serviceJourney.journeyPattern?.line?.transportMode
+                        ?: TransportMode.unknown,
                     extractLineId(call.serviceJourney.journeyPattern?.line?.id),
                     call.serviceJourney.journeyPattern?.line?.name ?: "unknown",
                     call.destinationDisplay?.frontText ?: "unknown",

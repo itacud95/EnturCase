@@ -9,13 +9,11 @@ import androidx.core.content.ContextCompat
 import com.example.enturcase.utils.Logger
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class LocationRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+class LocationRepository (
+    private val context: Context,
     private val fusedLocationProviderClient: FusedLocationProviderClient
 ) {
     @SuppressLint("MissingPermission")
