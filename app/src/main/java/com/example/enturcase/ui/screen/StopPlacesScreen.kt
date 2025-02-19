@@ -17,18 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 import com.example.enturcase.ui.components.StopPlaceItem
+import com.example.enturcase.ui.events.UiEvent
 import com.example.enturcase.ui.navigation.Screen
 import com.example.enturcase.ui.theme.EnturCaseTheme
 
 data class StopPlacesContent(
     val stopPlaces: List<StopPlace>,
 )
-
-sealed class UiEvent {
-    data object ReloadData : UiEvent()
-}
 
 @Preview
 @Composable

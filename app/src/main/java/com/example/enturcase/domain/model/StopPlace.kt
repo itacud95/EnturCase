@@ -1,4 +1,4 @@
-package com.example.enturcase.data.model
+package com.example.enturcase.domain.model
 
 data class StopPlace(
     val name: String,

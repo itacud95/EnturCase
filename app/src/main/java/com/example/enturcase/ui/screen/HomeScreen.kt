@@ -36,29 +36,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
-@Composable
-fun LocationPermissionDialog(viewModel: LocationViewModel) {
-    val isPermissionGranted by viewModel.isPermissionGranted.collectAsState()
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        Logger.debug("granted: $isGranted")
-//        viewModel.updatePermissionStatus(isGranted)
-    }
-
-    if (!isPermissionGranted) {
-        AlertDialog(
-            onDismissRequest = {},
-            confirmButton = {
-                TextButton(onClick = { permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
-                    Text("Grant Permission")
-                }
-            },
-            title = { Text("Location Permission Required") },
-            text = { Text("This app requires location permission to function properly.") }
-        )
-    }
-}
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable

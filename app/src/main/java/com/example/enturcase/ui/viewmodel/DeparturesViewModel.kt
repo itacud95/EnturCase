@@ -1,11 +1,10 @@
 package com.example.enturcase.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.data.repository.DeparturesRepository
+import com.example.enturcase.domain.model.Departure
 import com.example.enturcase.utils.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

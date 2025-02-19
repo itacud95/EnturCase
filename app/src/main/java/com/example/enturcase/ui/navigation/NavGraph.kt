@@ -10,15 +10,16 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.enturcase.GraphQLClient
+import com.example.enturcase.data.remote.GraphQLClient
 import com.example.enturcase.data.repository.DeparturesRepository
 import com.example.enturcase.data.repository.LocationRepository
 import com.example.enturcase.data.repository.StopPlacesRepository
+import com.example.enturcase.ui.events.UiEvent
+import com.example.enturcase.ui.screen.DeparturesContent
 import com.example.enturcase.ui.screen.DeparturesScreen
 import com.example.enturcase.ui.screen.HomeScreen
 import com.example.enturcase.ui.screen.StopPlacesContent
 import com.example.enturcase.ui.screen.StopPlacesScreen
-import com.example.enturcase.ui.screen.UiEvent
 import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.ui.viewmodel.DeparturesViewModelFactory
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
@@ -72,8 +73,14 @@ fun NavGraph(
                     stopPlaceId
                 )
             )
-
-            DeparturesScreen(navController, departuresViewModel)
+            val departures by departuresViewModel.departures.collectAsState()
+            val timeLeft by departuresViewModel.timeRemaining.collectAsState()
+            val content = DeparturesContent(
+                departures,
+                timeLeft,
+            )
+            val onEvent: (UiEvent) -> Unit = {}
+            DeparturesScreen(navController, content, onEvent)
         }
     }
 }

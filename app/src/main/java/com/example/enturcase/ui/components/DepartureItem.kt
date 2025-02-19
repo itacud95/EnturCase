@@ -11,22 +11,18 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.enturcase.R
-import com.example.enturcase.data.repository.Departure
+import com.example.enturcase.domain.model.Departure
 import com.example.enturcase.type.TransportMode
-import com.example.enturcase.ui.viewmodel.TimerViewModel
 import java.time.ZonedDateTime
 
 
@@ -71,18 +67,18 @@ fun TransportModeIcon(mode: TransportMode) {
 @Composable
 fun DepartureItem(
     departure: Departure = Departure(
-        TransportMode.cableway,
-        20,
-        "line",
-        "destination",
+        TransportMode.rail,
+        412,
+        "Stockholm",
         ZonedDateTime.now(),
     ), remainingTime: String = "now"
 ) {
     Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(vertical = 8.dp)
+            .testTag("${departure.lineId}-${departure.destination}")
     ) {
         Row(
             modifier = Modifier.padding(16.dp)

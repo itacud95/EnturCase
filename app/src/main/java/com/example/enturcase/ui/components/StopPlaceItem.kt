@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 
 @Composable
 fun StopPlaceItem(stopPlace: StopPlace, onClick: () -> Unit) {

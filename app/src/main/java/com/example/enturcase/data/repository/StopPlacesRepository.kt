@@ -1,7 +1,7 @@
 package com.example.enturcase.data.repository
 
 import android.location.Location
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 import com.example.enturcase.utils.Logger
 import com.google.gson.Gson
 import com.google.gson.JsonObject

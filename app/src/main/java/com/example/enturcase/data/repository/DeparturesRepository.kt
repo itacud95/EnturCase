@@ -1,28 +1,14 @@
 package com.example.enturcase.data.repository
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.enturcase.GraphQLClient
 import com.example.enturcase.StopPlaceQuery
+import com.example.enturcase.data.remote.GraphQLClient
+import com.example.enturcase.domain.model.Departure
 import com.example.enturcase.type.TransportMode
-import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.utils.Logger
 import java.time.ZonedDateTime
 
-
-data class Departure(
-    val transportMode: TransportMode,
-    val lineId: Int,
-    val lineName: String,
-    val destination: String,
-    val departure: ZonedDateTime,
-)
-
 class DeparturesRepository(private val client: GraphQLClient) {
 
-
-    // todo empty list
     fun listDeparturesForStop(stopPlaceId: String): List<Departure> {
         val result = client.fetchStopPlace(stopPlaceId)
         return formatStopPlace(result)
@@ -59,7 +45,6 @@ class DeparturesRepository(private val client: GraphQLClient) {
                     call.serviceJourney.journeyPattern?.line?.transportMode
                         ?: TransportMode.unknown,
                     extractLineId(call.serviceJourney.journeyPattern?.line?.id),
-                    call.serviceJourney.journeyPattern?.line?.name ?: "unknown",
                     call.destinationDisplay?.frontText ?: "unknown",
                     departure,
                 )

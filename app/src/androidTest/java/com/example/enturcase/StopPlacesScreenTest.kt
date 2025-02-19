@@ -6,22 +6,14 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
+import com.example.enturcase.ui.events.UiEvent
 import com.example.enturcase.ui.screen.StopPlacesContent
 import com.example.enturcase.ui.screen.StopPlacesScreen
-import com.example.enturcase.ui.screen.UiEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import org.junit.After
-
-import org.junit.Test
-
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 
 class AppSearchScreenTest {
 
