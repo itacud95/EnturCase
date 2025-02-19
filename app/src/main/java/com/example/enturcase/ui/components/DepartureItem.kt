@@ -27,6 +27,7 @@ import com.example.enturcase.R
 import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.type.TransportMode
 import com.example.enturcase.ui.viewmodel.TimerViewModel
+import java.time.ZonedDateTime
 
 
 @Composable
@@ -67,11 +68,11 @@ fun TransportModeIcon(mode: TransportMode) {
 }
 
 @Composable
-fun CountdownTimer(viewModel: TimerViewModel, targetTime: String) {
+fun CountdownTimer(viewModel: TimerViewModel, departure: Departure) {
     val timeLeft by viewModel.timeRemaining.collectAsState()
-    val remainingTime = timeLeft[targetTime] ?: "--:--:--"
-    LaunchedEffect(targetTime) {
-        viewModel.startTimer(targetTime)
+    val remainingTime = timeLeft[departure] ?: "--:--:--"
+    LaunchedEffect(departure) {
+        viewModel.startTimer(departure)
     }
     Text(text = remainingTime)
 }
@@ -85,7 +86,7 @@ fun DepartureItem(
         20,
         "line",
         "destination",
-        "departure"
+        ZonedDateTime.now(),
     )
 ) {
     val viewModel: TimerViewModel = viewModel()
@@ -116,7 +117,7 @@ fun DepartureItem(
                     Text(text = departure.destination, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
 //                Text(text = departure.departure, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                CountdownTimer(viewModel, departure.departure)
+                CountdownTimer(viewModel, departure)
             }
         }
     }

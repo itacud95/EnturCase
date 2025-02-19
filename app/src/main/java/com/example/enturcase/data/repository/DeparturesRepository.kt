@@ -4,6 +4,7 @@ import com.example.enturcase.GraphQLClient
 import com.example.enturcase.StopPlaceQuery
 import com.example.enturcase.type.TransportMode
 import com.example.enturcase.utils.Logger
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 
@@ -12,7 +13,7 @@ data class Departure(
     val lineId: Int,
     val lineName: String,
     val destination: String,
-    val departure: String, // todo type time
+    val departure: ZonedDateTime,
 )
 
 class DeparturesRepository @Inject constructor(private val client: GraphQLClient) {
@@ -47,13 +48,15 @@ class DeparturesRepository @Inject constructor(private val client: GraphQLClient
             Logger.debug("here comes one")
             Logger.debug(call.toString())
 
+            val departure = ZonedDateTime.parse(call.expectedDepartureTime.toString())
+
             departures.add(
                 Departure(
                     call.serviceJourney.journeyPattern?.line?.transportMode ?: TransportMode.unknown,
                     extractLineId(call.serviceJourney.journeyPattern?.line?.id),
                     call.serviceJourney.journeyPattern?.line?.name ?: "unknown",
                     call.destinationDisplay?.frontText ?: "unknown",
-                    call.expectedDepartureTime.toString(),
+                    departure,
                 )
             )
 

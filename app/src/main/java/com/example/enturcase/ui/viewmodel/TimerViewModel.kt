@@ -2,7 +2,7 @@ package com.example.enturcase.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.enturcase.utils.Logger
+import com.example.enturcase.data.repository.Departure
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,24 +13,24 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class TimerViewModel : ViewModel() {
-    private val _timeRemaining = MutableStateFlow<Map<String, String>>(emptyMap())
+    private val _timeRemaining = MutableStateFlow<Map<Departure, String>>(emptyMap())
     val timeRemaining = _timeRemaining.asStateFlow()
 
-    fun startTimer(targetTime: String) {
+    fun startTimer(departure: Departure) {
         viewModelScope.launch {
             while (true) {
-                val remaining = getRemainingMinutes(targetTime)
-                _timeRemaining.update { it + (targetTime to remaining) }
+                val remaining = getRemainingMinutes(departure.departure)
+                _timeRemaining.update { it + (departure to remaining) }
                 kotlinx.coroutines.delay(1000L) // todo: every 10
             }
         }
     }
 
-    private fun getRemainingMinutes(targetTime: String): String {
+    private fun getRemainingMinutes(targetTime: ZonedDateTime): String {
         return try {
-            val targetDateTime = ZonedDateTime.parse(targetTime)
+//            val targetDateTime = ZonedDateTime.parse(targetTime)
             val now = ZonedDateTime.now()
-            val duration = Duration.between(now, targetDateTime)
+            val duration = Duration.between(now, targetTime)
 
             val minutesLeft = duration.toMinutes()
 
