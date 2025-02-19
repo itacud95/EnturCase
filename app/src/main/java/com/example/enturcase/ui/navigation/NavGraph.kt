@@ -1,7 +1,8 @@
 package com.example.enturcase.ui.navigation
 
-import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -15,7 +16,9 @@ import com.example.enturcase.data.repository.LocationRepository
 import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.ui.screen.DeparturesScreen
 import com.example.enturcase.ui.screen.HomeScreen
+import com.example.enturcase.ui.screen.StopPlacesContent
 import com.example.enturcase.ui.screen.StopPlacesScreen
+import com.example.enturcase.ui.screen.UiEvent
 import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.ui.viewmodel.DeparturesViewModelFactory
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
@@ -46,7 +49,16 @@ fun NavGraph(
                     )
                 )
             )
-            StopPlacesScreen(navController, nearbyStopsViewModel)
+            val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
+            val content = StopPlacesContent(
+                stopPlaces
+            )
+            val onEvent: (UiEvent) -> Unit = { event ->
+                when (event) {
+                    is UiEvent.ReloadData -> nearbyStopsViewModel.refreshData()
+                }
+            }
+            StopPlacesScreen(navController, content, onEvent)
         }
 
         composable(

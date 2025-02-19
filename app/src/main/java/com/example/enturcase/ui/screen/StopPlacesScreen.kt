@@ -12,34 +12,55 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.enturcase.data.model.StopPlace
 import com.example.enturcase.ui.components.StopPlaceItem
 import com.example.enturcase.ui.navigation.Screen
 import com.example.enturcase.ui.theme.EnturCaseTheme
-import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
+
+data class StopPlacesContent(
+    val stopPlaces: List<StopPlace>,
+)
+
+sealed class UiEvent {
+    data object ReloadData : UiEvent()
+}
+
+@Preview
+@Composable
+fun StopPlacesScreenPreview() {
+
+    StopPlacesScreen(
+        rememberNavController(),
+        StopPlacesContent(
+            stopPlaces = listOf(
+                StopPlace("Ut i vår hage", "label", "123", 0.123),
+                StopPlace("Danskebåten", "label", "123", 0.123)
+            )
+        ),
+        {},
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StopPlacesScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel) {
-
-    LaunchedEffect(Unit) {
-        nearbyStopsViewModel.refreshData()
-    }
-    val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
-
+fun StopPlacesScreen(
+    navController: NavController,
+    stopPlacesContent: StopPlacesContent,
+    onEvent: (UiEvent) -> Unit,
+) {
     EnturCaseTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Stop Places") },
+                    title = { Text("Nearby stop places") },
                     actions = {
                         IconButton(onClick = {
-                            nearbyStopsViewModel.refreshData()
+                            onEvent(UiEvent.ReloadData)
                         }) {
                             Icon(imageVector = Icons.Default.Refresh, contentDescription = "Reload")
                         }
@@ -53,8 +74,8 @@ fun StopPlacesScreen(navController: NavController, nearbyStopsViewModel: NearbyS
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                items(stopPlaces.size) {
-                    val stopPlace = stopPlaces[it]
+                items(stopPlacesContent.stopPlaces.size) {
+                    val stopPlace = stopPlacesContent.stopPlaces[it]
                     StopPlaceItem(stopPlace) {
                         navController.navigate(Screen.Departures.createRoute(stopPlace.source_id))
                     }
