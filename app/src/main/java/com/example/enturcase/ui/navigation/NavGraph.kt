@@ -21,7 +21,6 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    locationViewModel: LocationViewModel,
     nearbyStopsViewModel: NearbyStopsViewModel,
 ) {
     NavHost(
