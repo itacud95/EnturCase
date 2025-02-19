@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,6 +26,10 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StopPlacesScreen(navController: NavController, nearbyStopsViewModel: NearbyStopsViewModel) {
+
+    LaunchedEffect(Unit) {
+        nearbyStopsViewModel.refreshData()
+    }
     val stopPlaces by nearbyStopsViewModel.stopPlaces.collectAsState()
 
     EnturCaseTheme {

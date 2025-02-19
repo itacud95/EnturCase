@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.enturcase.GraphQLClient
 import com.example.enturcase.data.repository.DeparturesRepository
 import com.example.enturcase.ui.screen.DeparturesScreen
+import com.example.enturcase.ui.screen.HomeScreen
 import com.example.enturcase.ui.screen.StopPlacesScreen
 import com.example.enturcase.ui.viewmodel.DeparturesViewModel
 import com.example.enturcase.ui.viewmodel.DeparturesViewModelFactory
@@ -25,8 +26,12 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.StopPlaces.route
+        startDestination = Screen.Home.route
     ) {
+        composable(Screen.Home.route) {
+            HomeScreen(navController, locationViewModel)
+        }
+
         composable(Screen.StopPlaces.route) {
             StopPlacesScreen(navController, nearbyStopsViewModel)
         }
@@ -35,7 +40,12 @@ fun NavGraph(
             arguments = listOf(navArgument("stopPlaceId") { type = NavType.StringType })
         ) { backStackEntry ->
             val stopPlaceId = backStackEntry.arguments?.getString("stopPlaceId") ?: ""
-            val departuresViewModel: DeparturesViewModel = viewModel(factory = DeparturesViewModelFactory(DeparturesRepository(GraphQLClient), stopPlaceId))
+            val departuresViewModel: DeparturesViewModel = viewModel(
+                factory = DeparturesViewModelFactory(
+                    DeparturesRepository(GraphQLClient),
+                    stopPlaceId
+                )
+            )
 
             DeparturesScreen(navController, departuresViewModel)
         }

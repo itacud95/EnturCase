@@ -7,9 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.enturcase.data.repository.LocationRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LocationViewModel(private val locationRepository: LocationRepository) : ViewModel() {
+
+    private val _isPermissionGranted = MutableStateFlow(locationRepository.hasLocationPermission())
+    val isPermissionGranted: StateFlow<Boolean> get() = _isPermissionGranted.asStateFlow()
+
 
     private val _location = MutableLiveData<Location?>()
     val location: LiveData<Location?> get() = _location

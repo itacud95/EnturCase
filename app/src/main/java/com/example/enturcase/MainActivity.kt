@@ -1,8 +1,12 @@
 package com.example.enturcase
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
@@ -26,7 +32,10 @@ import com.example.enturcase.ui.viewmodel.NearbyStopsViewModel
 import com.example.enturcase.ui.viewmodel.NearbyStopsViewModelFactory
 import com.example.enturcase.utils.Logger
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 object GraphQLClient {
     private val apolloClient: ApolloClient = ApolloClient.Builder()
@@ -141,21 +150,106 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private suspend fun waitForPermission() {
+        if (hasLocationPermission()) return // Already granted, no need to wait
+
+        suspendCancellableCoroutine<Unit> { continuation ->
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+
+            // Register the callback
+            permissionCallback = { granted ->
+                if (granted) {
+                    continuation.resume(Unit)
+                } else {
+                    showPermissionDialog()
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                        showPermissionDialog() // Show dialog again if the user denied
+//                    } else {
+//                        showSettingsDialog() // If permanently denied, direct to settings
+//                    }
+                }
+            }
+        }
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            permissionCallback?.invoke(isGranted)
+            permissionCallback = null // Reset callback after use
+        }
+
+    private var permissionCallback: ((Boolean) -> Unit)? = null
+
+    private fun fetchLocationIfPermissionGranted() {
+        if (hasLocationPermission()) {
+            lifecycleScope.launch {
+//                val location = fetchLocation()
+//                location?.let {
+//                    // Handle location update (e.g., update UI or ViewModel)
+//                }
+            }
+        }
+    }
+
+//    suspend fun fetchLocation(): Location? {
+//        return suspendCancellableCoroutine { continuation ->
+//            fusedLocationProviderClient.getCurrentLocation(
+//                Priority.PRIORITY_HIGH_ACCURACY,
+//                null
+//            ).addOnSuccessListener { location ->
+//                continuation.resume(location)
+//            }.addOnFailureListener { e ->
+//                Logger.debug("Error fetching location: ${e.message}")
+//                continuation.resume(null)
+//            }
+//        }
+//    }
+
+    private fun showPermissionDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Location Permission Needed")
+            .setMessage("This app requires location access to function properly. Please grant permission or exit.")
+            .setPositiveButton("Grant Permission") { _, _ ->
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            .setNegativeButton("Exit") { _, _ ->
+                finish()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun showSettingsDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Permission Denied")
+            .setMessage("Location permission is permanently denied. Please enable it in settings.")
+            .setPositiveButton("Open Settings") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = android.net.Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel") { _, _ -> finish() }
+            .setCancelable(false)
+            .show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Logger.debug("oncreate")
 
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        checkAndRequestPermissions()
-
-//        listDeparturesForStop()
-
 //        lifecycleScope.launch {
-//            viewModel.data.collect { response ->
-//                for (stopPlace in response){
-//                    Logger.debug(stopPlace.toString())
-//                }
-//            }
+//            waitForPermission()
+//            fetchLocationIfPermissionGranted()
+//        }
+
+//        if (!hasLocationPermission()) {
+//            showPermissionDialog()
 //        }
 
         enableEdgeToEdge()
@@ -165,24 +259,7 @@ class MainActivity : ComponentActivity() {
                 navController,
                 locationViewModel,
                 nearbyStopsViewModel,
-//                departuresViewModel,
             )
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EnturCaseTheme {
-        Greeting("Android")
     }
 }

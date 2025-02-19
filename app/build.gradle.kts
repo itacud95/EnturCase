@@ -68,6 +68,9 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
     // navigation
     implementation("androidx.navigation:navigation-compose:2.8.5")
+    // permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
+
 }
 
 apollo {

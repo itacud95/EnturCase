@@ -20,7 +20,7 @@ class LocationRepository (
     suspend fun getLocationUpdates(): Location? {
         if (!hasLocationPermission()) {
             Logger.debug("Missing location permission")
-            return null
+//            return null
         }
 
         return suspendCoroutine { continuation ->
@@ -36,7 +36,7 @@ class LocationRepository (
         }
     }
 
-    private fun hasLocationPermission(): Boolean {
+    fun hasLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             context, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
