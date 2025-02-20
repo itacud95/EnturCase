@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
     id("com.apollographql.apollo3")
 }
 
@@ -64,16 +62,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // okhttp
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    // hilt: https://developer.android.com/training/dependency-injection/hilt-android
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     // gson
     implementation("com.google.code.gson:gson:2.10.1")
     // graphql
     implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
     // navigation
     implementation("androidx.navigation:navigation-compose:2.8.5")
+    // permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
+
 }
 
 apollo {

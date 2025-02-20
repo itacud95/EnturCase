@@ -1,12 +1,11 @@
 package com.example.enturcase.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.enturcase.data.repository.Departure
 import com.example.enturcase.data.repository.DeparturesRepository
+import com.example.enturcase.domain.model.Departure
 import com.example.enturcase.utils.Logger
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -19,18 +18,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.ZonedDateTime
-import javax.inject.Inject
 
-
-@HiltViewModel
-class DeparturesViewModel @Inject constructor(
+class DeparturesViewModelFactory(
     private val departuresRepository: DeparturesRepository,
-    savedStateHandle: SavedStateHandle
+    private val stopPlaceId: String,
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(DeparturesViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DeparturesViewModel(departuresRepository, stopPlaceId) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class DeparturesViewModel(
+    private val departuresRepository: DeparturesRepository,
+    private val stopPlaceId: String,
 ) : ViewModel() {
-
-    private val stopPlaceId: String =
-        savedStateHandle["stopPlaceId"] ?: throw IllegalArgumentException("Missing stopPlaceId")
-
     private val _departures = MutableStateFlow<List<Departure>>(emptyList())
     val departures: StateFlow<List<Departure>> = _departures.asStateFlow()
 

@@ -1,7 +1,7 @@
 package com.example.enturcase.data.repository
 
 import android.location.Location
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 import com.example.enturcase.utils.Logger
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -11,9 +11,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import javax.inject.Inject
 
-class StopPlacesRepository @Inject constructor(private val client: OkHttpClient) {
+class StopPlacesRepository() {
 
     suspend fun loadStopPlacesForLocation(location: Location): List<StopPlace> {
         val response = fetchData(location) ?: return listOf()
@@ -60,6 +59,7 @@ class StopPlacesRepository @Inject constructor(private val client: OkHttpClient)
 
         return withContext(Dispatchers.IO) {
             try {
+                val client = OkHttpClient()
                 client.newCall(request).execute().use { response: Response ->
                     if (response.isSuccessful) {
                         response.body?.string()

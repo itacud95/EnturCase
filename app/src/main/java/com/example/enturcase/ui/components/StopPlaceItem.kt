@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 
 @Composable
 fun StopPlaceItem(stopPlace: StopPlace, onClick: () -> Unit) {
@@ -24,7 +24,7 @@ fun StopPlaceItem(stopPlace: StopPlace, onClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = stopPlace.label, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = stopPlace.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text(text = "Distance: ${stopPlace.distance} km", fontSize = 14.sp)
         }
     }
