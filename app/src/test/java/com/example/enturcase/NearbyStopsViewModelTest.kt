@@ -27,10 +27,10 @@ import org.junit.Test
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-
 @ExperimentalCoroutinesApi
-class MainDispatcherRule : TestWatcher() {
-    private val testDispatcher = StandardTestDispatcher()
+class TestCoroutineRule(
+    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
+) : TestWatcher() {
 
     override fun starting(description: Description?) {
         Dispatchers.setMain(testDispatcher)
@@ -45,7 +45,7 @@ class MainDispatcherRule : TestWatcher() {
 class NearbyStopsViewModelTest {
 
     @get:Rule
-    val dispatcherRule = MainDispatcherRule()
+    val dispatcherRule = TestCoroutineRule()
 
     private lateinit var viewModel: NearbyStopsViewModel
     private val stopPlacesRepository: StopPlacesRepository = mockk()
