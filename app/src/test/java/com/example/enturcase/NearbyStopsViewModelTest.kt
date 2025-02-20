@@ -29,28 +29,23 @@ import org.junit.runner.Description
 
 
 @ExperimentalCoroutinesApi
-class TestCoroutineRule(
-    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
-) : TestWatcher(), TestCoroutineScope by TestCoroutineScope(testDispatcher) {
+class MainDispatcherRule : TestWatcher() {
+    private val testDispatcher = StandardTestDispatcher()
 
     override fun starting(description: Description?) {
-        super.starting(description)
         Dispatchers.setMain(testDispatcher)
     }
 
     override fun finished(description: Description?) {
-        super.finished(description)
         Dispatchers.resetMain()
-        cleanupTestCoroutines()
     }
 }
-
 
 @ExperimentalCoroutinesApi
 class NearbyStopsViewModelTest {
 
     @get:Rule
-    val dispatcherRule = TestCoroutineRule()
+    val dispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: NearbyStopsViewModel
     private val stopPlacesRepository: StopPlacesRepository = mockk()
