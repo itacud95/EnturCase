@@ -11,6 +11,13 @@ android {
     namespace = "com.example.enturcase"
     compileSdk = 35
 
+    packaging {
+        resources {
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.enturcase"
         minSdk = 26
@@ -70,6 +77,21 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.5")
     // permissions
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
+    // mockk
+    testImplementation("io.mockk:mockk-android:1.13.7")
+    // bytebuddy
+    testImplementation("net.bytebuddy:byte-buddy:1.14.8")
+    // coroutines
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    //
+    testImplementation("app.cash.turbine:turbine:0.12.1")
+    // truth
+    testImplementation( "com.google.truth:truth:1.1.3")
+
+
+
+
 
 }
 

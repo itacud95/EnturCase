@@ -2,7 +2,7 @@ package com.example.enturcase.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.enturcase.data.repository.Departure
+import com.example.enturcase.domain.model.Departure
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

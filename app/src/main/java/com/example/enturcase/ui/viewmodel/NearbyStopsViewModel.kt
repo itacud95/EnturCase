@@ -4,7 +4,7 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.enturcase.data.model.StopPlace
+import com.example.enturcase.domain.model.StopPlace
 import com.example.enturcase.data.repository.LocationRepository
 import com.example.enturcase.data.repository.StopPlacesRepository
 import com.example.enturcase.utils.Logger
@@ -17,9 +17,6 @@ class NearbyStopsViewModel(
     private val stopPlacesRepository: StopPlacesRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {
-
-    private val _location = MutableStateFlow<Location?>(null)
-    val location: StateFlow<Location?> = _location
 
     private val _stopPlaces = MutableStateFlow<List<StopPlace>>(emptyList())
     val stopPlaces: StateFlow<List<StopPlace>> = _stopPlaces
@@ -40,7 +37,6 @@ class NearbyStopsViewModel(
             val currentLocation = locationRepository.getLocationUpdates()
             currentLocation?.let {
                 Logger.debug("got location")
-                _location.value = it
                 fetchData(it)
             }
         }
