@@ -91,8 +91,8 @@ dependencies {
     // mockk
     testImplementation("io.mockk:mockk-android:1.13.9")
     // bytebuddy
-    testImplementation("net.bytebuddy:byte-buddy:1.14.8")
-    testImplementation("net.bytebuddy:byte-buddy-agent:1.14.8")
+//    testImplementation("net.bytebuddy:byte-buddy:1.14.8")
+//    testImplementation("net.bytebuddy:byte-buddy-agent:1.14.8")
     // coroutines
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("androidx.arch.core:core-testing:2.2.0")

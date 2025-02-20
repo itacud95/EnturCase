@@ -1,5 +1,6 @@
 package com.example.enturcase
 
+import android.location.Location
 import android.util.Log
 import app.cash.turbine.test
 import com.example.enturcase.data.repository.LocationRepository
@@ -16,6 +17,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -53,28 +55,36 @@ class NearbyStopsViewModelTest {
     private lateinit var viewModel: NearbyStopsViewModel
     private val stopPlacesRepository: StopPlacesRepository = mockk()
     private val locationRepository: LocationRepository = mockk()
+    private val stopPlaces = listOf(
+        StopPlace("name", "id", 3.0),
+        StopPlace("name", "id", 5.0),
+        StopPlace("name", "id", 1.0),
+    )
+    private val sortedStopPlaces = stopPlaces.sortedBy { it.distance }
+    private val location = mockk<Location>()
 
     @Before
     fun setup() {
         mockkStatic(Log::class)
         every { Log.d(any(), any()) } returns 0
-
-
-        val expectedData = listOf(StopPlace("name", "id", 0.0))
-        coEvery { stopPlacesRepository.loadStopPlacesForLocation(any()) } returns expectedData
-
-        coEvery { locationRepository.getLocationUpdates() } returns null
-
+        coEvery { stopPlacesRepository.loadStopPlacesForLocation(any()) } returns stopPlaces
+        coEvery { locationRepository.getLocationUpdates() } returns location
         viewModel = NearbyStopsViewModel(stopPlacesRepository, locationRepository)
     }
 
     @Test
-    fun foo() = runTest {
-
-        val expectedData = listOf(StopPlace("name", "id", 0.0))
-        coEvery { stopPlacesRepository.loadStopPlacesForLocation(any()) } returns expectedData
-
-        coEvery { locationRepository.getLocationUpdates() } returns null
+    fun dataFromRepository() = runTest {
+        advanceUntilIdle()
+        viewModel.stopPlaces.test {
+            assertThat(awaitItem()).containsExactlyElementsIn(stopPlaces)
+        }
     }
 
+    @Test
+    fun dataIsSorted() = runTest {
+        advanceUntilIdle()
+        viewModel.stopPlaces.test {
+            assertThat(awaitItem()).isEqualTo(sortedStopPlaces)
+        }
+    }
 }

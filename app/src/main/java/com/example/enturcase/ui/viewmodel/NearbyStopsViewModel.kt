@@ -45,6 +45,7 @@ class NearbyStopsViewModel(
     private fun fetchData(location: Location) {
         viewModelScope.launch {
             _stopPlaces.value = stopPlacesRepository.loadStopPlacesForLocation(location)
+                .sortedBy { it.distance }
         }
     }
 }
